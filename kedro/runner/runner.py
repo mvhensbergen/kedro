@@ -63,6 +63,7 @@ class AbstractRunner(ABC):
         catalog: CatalogProtocol | SharedMemoryCatalogProtocol,
         hook_manager: PluginManager | None = None,
         run_id: str | None = None,
+        override_inputs: dict[str,str] | None = None,
         only_missing_outputs: bool = False,
     ) -> dict[str, Any]:
         """Run the ``Pipeline`` using the datasets provided by ``catalog``
@@ -92,6 +93,8 @@ class AbstractRunner(ABC):
         warmed_up_ds = []
         for ds in pipeline.datasets():
             if ds in catalog:
+                if ds in override_inputs:
+                    catalog.save(ds, override_inputs[ds])
                 warmed_up_ds.append(ds)
             _ = catalog.get(ds, fallback_to_runtime_pattern=True)
 

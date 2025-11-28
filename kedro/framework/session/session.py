@@ -289,6 +289,7 @@ class KedroSession:
         to_outputs: Iterable[str] | None = None,
         load_versions: dict[str, str] | None = None,
         namespaces: Iterable[str] | None = None,
+        override_inputs: dict[str,str] | None = None,
         only_missing_outputs: bool = False,
     ) -> dict[str, Any]:
         """Runs the pipeline with a specified runner.
@@ -412,6 +413,7 @@ class KedroSession:
                 hook_manager,
                 run_id=session_id,
                 only_missing_outputs=only_missing_outputs,
+                override_inputs=override_inputs
             )
             self._run_called = True
         except Exception as error:
